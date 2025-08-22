@@ -1,0 +1,1 @@
+-- script de creación de tablas

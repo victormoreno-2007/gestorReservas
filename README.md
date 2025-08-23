@@ -58,3 +58,21 @@ source venv/bin/activate
 - Si tu usuario root no tiene contraseña:
   ```bash
    mysql -u root < docsFlowEstructura.sql
+
+
+## 🗄️ Conexión a la Base de Datos
+
+se utilizó **SQLAlchemy** para conectarse a la base de datos **MySQL**.  
+La configuración de la conexión se gestiona mediante variables de entorno definidas en el archivo `.env`.
+
+---
+
+### ⚙️ Configuración del archivo `.env`
+> Se debe crear el archivo .env si no existe  
+> Se debe crearlo manualmente en la **raíz del proyecto**.
+
+Crea un archivo llamado `.env` con el siguiente contenido:
+
+```env
+DATABASE_URL=mysql+pymysql://usuario:password@localhost:3306/gestorreservas
+```

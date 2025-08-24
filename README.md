@@ -71,7 +71,7 @@ La configuración de la conexión se gestiona mediante variables de entorno defi
 > Se debe crear el archivo .env si no existe  
 > Se debe crearlo manualmente en la **raíz del proyecto**.
 
-Crea un archivo llamado `.env` con el siguiente contenido:
+Al crear el llamado `.env` innserta el siguiente contenido:
 
 ```env
 DATABASE_URL=mysql+pymysql://usuario:password@localhost:3306/gestorreservas
@@ -86,3 +86,20 @@ se implementaron los modelos que representan las tablas de la base de datos:
 - **Reservations** → Tabla `reservation`
 
 Estos modelos definen la estructura de cada tabla.
+
+## 📌 CRUD del Sistema de Reservas
+
+Este módulo implementa las operaciones CRUD (**Crear, Leer, Actualizar y Eliminar**) para las entidades principales del sistema:
+
+- 👤 **Usuarios**
+- 🏢 **Salas**
+- 📅 **Reservas**
+
+
+### 📍 Endpoints
+
+- **POST**  → Crear registro
+- **GET**  → Obtener lista de registros
+- **GET**  → Obtener un registro 
+- **PUT**  → Actualizar registro
+- **DELETE**  → Eliminar  registro

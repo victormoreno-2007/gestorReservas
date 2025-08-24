@@ -76,3 +76,13 @@ Crea un archivo llamado `.env` con el siguiente contenido:
 ```env
 DATABASE_URL=mysql+pymysql://usuario:password@localhost:3306/gestorreservas
 ```
+
+## 🏗️ Modelos y Schemas
+
+se implementaron los modelos que representan las tablas de la base de datos:
+
+- **Users** → Tabla `users`
+- **Rooms** → Tabla `rooms`
+- **Reservations** → Tabla `reservation`
+
+Estos modelos definen la estructura de cada tabla.

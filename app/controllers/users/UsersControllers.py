@@ -33,7 +33,7 @@ def updateUser(dataUser: UserBase, UserId:int):
             rol = dataUser.rol
         ).where(users.c.id == UserId))
         result = conn.execute(users.select().where(users.c.id == UserId)).first()
-        return dict(result._mapping)
+        return dict(result._mapping)  if result else None
     
 # eliminar usuario
 def deleteUser(userId: int):

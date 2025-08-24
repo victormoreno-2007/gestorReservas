@@ -4,7 +4,7 @@ from app.database.connection import engine
 from ...shema.rooms.RoomsShema import RoomCreate
 
 #crear sala
-def create_room(roomData: RoomCreate):
+def create_rooms(roomData: RoomCreate):
     newRoom = roomData.dict()
     with engine.begin() as conn:
         conn.execute(rooms.insert().values(newRoom))
@@ -34,7 +34,7 @@ def updateRooms(roomData: RoomCreate, roomId:int):
             recursos = roomData.recursos
         ).where(rooms.c.id == roomId))
         result = conn.execute(rooms.select().where(rooms.c.id == roomId)).first()
-        return dict(result._mapping)
+        return dict(result._mapping) if result else None
     
 # eliminar sala
 def deleteRooms(userId: int):

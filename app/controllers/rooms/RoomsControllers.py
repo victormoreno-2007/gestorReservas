@@ -1,14 +1,16 @@
 from sqlalchemy import insert, select
 from ...models.romms.RoomsModel import rooms
 from app.database.connection import engine
-from ...shema.rooms.RoomsShema import RoomCreate
+from ...shema.rooms.RoomsShema import RoomCreate,RoomBase
 
 #crear sala
-def create_rooms(roomData: RoomCreate):
+def createRooms(roomData: RoomCreate):
     newRoom = roomData.dict()
     with engine.begin() as conn:
-        conn.execute(rooms.insert().values(newRoom))
-    return newRoom
+        result = conn.execute(rooms.insert().values(newRoom))
+        user_id = result.lastrowid
+    return {"id": user_id,**newRoom}
+
 
 #ver salas
 def get_all_rooms():
@@ -25,8 +27,8 @@ def getRooms(roomsId: int):
         return None
     
 #Para metodo put de sala
-def updateRooms(roomData: RoomCreate, roomId:int):
-    with engine.connect() as conn:
+def updateRooms( roomData: RoomBase, roomId:int ):
+    with engine.begin() as conn:
         conn.execute(rooms.update().values(
             nombre = roomData.nombre,
             sede = roomData.sede,
@@ -37,6 +39,6 @@ def updateRooms(roomData: RoomCreate, roomId:int):
         return dict(result._mapping) if result else None
     
 # eliminar sala
-def deleteRooms(userId: int):
-    with engine.connect() as conn:
-        conn.execute(rooms.delete().where(rooms.c.id == userId))
+def deleteRooms(roomId: int):
+    with engine.begin() as conn:
+        conn.execute(rooms.delete().where(rooms.c.id == roomId))

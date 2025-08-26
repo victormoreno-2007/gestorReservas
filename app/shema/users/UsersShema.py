@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from enum import Enum
 
 class RoleEnum(str, Enum):
@@ -7,7 +7,7 @@ class RoleEnum(str, Enum):
 
 class UserBase(BaseModel):
     nombre: str
-    email: EmailStr
+    email: str
     rol: RoleEnum = RoleEnum.users
 
 class UserCreate(UserBase):

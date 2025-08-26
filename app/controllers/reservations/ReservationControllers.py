@@ -26,7 +26,7 @@ def getReservations(reservationId: int):
     
 #Para metodo put de reservacion
 def updateReservations(reservationData: ReservationCreate, reservationId: int):
-    with engine.connect() as conn:
+    with engine.begin() as conn:
         conn.execute(
             reservation.update().values(
                 idUsers = reservationData.idUsers,
@@ -42,5 +42,5 @@ def updateReservations(reservationData: ReservationCreate, reservationId: int):
     
 # eliminar reservacion
 def deleteReservations(reservationId: int):
-    with engine.connect() as conn:
+    with engine.begin() as conn:
         conn.execute(reservation.delete().where(reservation.c.id == reservationId))

@@ -103,3 +103,60 @@ Este módulo implementa las operaciones CRUD (**Crear, Leer, Actualizar y Elimin
 - **GET**  → Obtener un registro 
 - **PUT**  → Actualizar registro
 - **DELETE**  → Eliminar  registro
+
+# 📌 Implementación de Rutas - Gestor de Reservas
+
+se implementaron las rutas para el manejo de los **users**, **rooms** y **reservations**, las cuales estan presentes en la documentacion automatica de FastApi
+
+## 🚀 Rutas de Usuarios
+
+**GET** `/users/ List Users`
+- Devuelve la lista de usuarios registrados.  
+  
+**POST** `/users/ Create`
+- Crea nuevos usuarios
+
+**GET** `/users/ Get User`
+- Devuelve el usuario con el id digitado en el parametro
+
+**PUT** `/users/ Update`
+- Modifica el registro del usuario con el id digitado en el parametro
+
+**DELETE** `/users/ Delete`
+- Elimina el usuario con el id digitado en el parametro
+
+
+## 🚀 Rutas de habitaciones
+
+**GET** `/Rooms/ List Rooms`
+- Devuelve la lista de las habitaciones registradas.  
+  
+**POST** `/Rooms/ Create`
+- Crea nuevas habitaciones
+
+**GET** `/Rooms/ Get Rooms`
+- Devuelve la habitacion con el id digitado en el parametro
+
+**PUT** `/Rooms/ Update`
+- Modifica el registro de la habitacion con el id digitado en el parametro
+
+**DELETE** `/Rooms/ Delete`
+- Elimina la habitacion con el id digitado en el parametro
+
+
+## 🚀 Rutas de habitaciones
+
+**GET** `/Reservation/ List Reservation`
+- Devuelve la lista de las reservaciones registradas.  
+  
+**POST** `/Reservation/ Create`
+- Crea nuevas reservaciones
+
+**GET** `/Reservation/ Get Reservation`
+- Devuelve la reserva de la habitacion con el id digitado en el parametro
+
+**PUT** `/Reservation/ Update`
+- Modifica el registro del la reserva con el id digitado en el parametro
+
+**DELETE** `/Reservation/ Delete`
+- Elimina el registro con el id digitado en el parametro

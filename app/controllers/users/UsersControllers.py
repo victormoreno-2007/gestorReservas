@@ -1,14 +1,18 @@
-from sqlalchemy import insert, select
+from sqlalchemy import insert, select,Enum
 from ...models.users.UsersModel import users
 from app.database.connection import engine
-from ...shema.users.UsersShema import UserResponse, UserBase
+from ...shema.users.UsersShema import UserResponse, UserBase,UserCreate
 
 #crear usuario
-def create_user(userData: UserResponse):
+def create_user(userData: UserCreate):
     newUser = userData.dict()
     with engine.begin() as conn:
-        conn.execute(users.insert().values(newUser))
-    return newUser
+        result = conn.execute(users.insert().values(newUser))
+        user_id = result.lastrowid   
+    return {"id": user_id,**newUser}
+
+
+
 
 #ver usuarios
 def get_all_users():
@@ -26,7 +30,7 @@ def getUser(userId: int):
     
 #Para metodo put
 def updateUser(dataUser: UserBase, UserId:int):
-    with engine.connect() as conn:
+    with engine.begin() as conn:
         conn.execute(users.update().values(
             nombre = dataUser.nombre,
             email = dataUser.email,
@@ -37,5 +41,5 @@ def updateUser(dataUser: UserBase, UserId:int):
     
 # eliminar usuario
 def deleteUser(userId: int):
-    with engine.connect() as conn:
+    with engine.begin() as conn:
         conn.execute(users.delete().where(users.c.id == userId))

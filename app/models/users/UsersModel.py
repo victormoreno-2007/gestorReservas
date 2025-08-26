@@ -8,5 +8,5 @@ users = Table("users", metaData,
     Column("nombre", String(100), nullable=False),
     Column("email", String(100), unique=True, nullable=False),
     Column("contrasenaHash", String(255), nullable=False),
-    Column("rol", Enum("user", "admin"), default="user"))
+    Column("rol", Enum("users", "admin"), default="users"))
  

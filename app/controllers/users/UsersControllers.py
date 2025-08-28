@@ -1,11 +1,15 @@
 from sqlalchemy import insert, select,Enum
 from ...models.users.UsersModel import users
 from app.database.connection import engine
-from ...shema.users.UsersShema import UserResponse, UserBase,UserCreate
+from ...shema.users.UsersShema import  UserBase,UserCreate
+from passlib.context import CryptContext
 
+
+bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 #crear usuario
 def create_user(userData: UserCreate):
     newUser = userData.dict()
+    newUser["contrasenaHash"] = bcrypt_context.hash(newUser.pop("password"))
     with engine.begin() as conn:
         result = conn.execute(users.insert().values(newUser))
         user_id = result.lastrowid   

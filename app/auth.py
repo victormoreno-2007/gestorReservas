@@ -27,15 +27,16 @@ class Token(BaseModel):
 
 db_dependency = Annotated[Session, Depends(get_db)]
 
+
 @router.post("/token", response_model=Token)
-def loginAccessToken(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db:db_dependency):
+def  loginAccessToken(form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db:db_dependency):
     user = authenticate_user(form_data.username, form_data.password, db)
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail='Correo o contraseña incorrectos')
     token_expires = timedelta(minutes=20)
-    token = create_access_token(user["email"], user["id"], token_expires)
+    token = create_access_token(user["email"], user["id"],user["rol"], token_expires)
     return {"access_token": token, "token_type": "bearer"}
-
+ 
 def authenticate_user(email:str, password:str, db):
     query = select(users).where(users.c.email == email)
     result = db.execute(query).first()
@@ -46,8 +47,22 @@ def authenticate_user(email:str, password:str, db):
         return False
     return user_dict
 
-def create_access_token(email:str, userId: int, expiresDelta: timedelta):
-    encode = {'sub':email, 'id':userId}
+def create_access_token(email:str, userId: int,role:str, expiresDelta: timedelta):
+    encode = {'sub':email, 'id':userId, "role": role}
     expires = datetime.utcnow() + expiresDelta
     encode.update({'exp': expires})
     return jwt.encode(encode,SECRET_KEY, algorithm=ALGORITHM)
+
+async def getCurrent(token: Annotated[str, Depends(oauth2_bearer)]):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get('sub')
+        userId:int = payload.get('id')
+        role: str = payload.get("role")
+        if email is None or userId is None:
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='could not validate')
+        return {'email':email, 'id':userId, 'role':role}
+    except JWTError:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail='could not validate user')
+    
+

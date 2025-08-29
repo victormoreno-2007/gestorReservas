@@ -2,7 +2,7 @@ from sqlalchemy import insert, select, update
 from ...models.reservations.ReservationsModel import reservation
 from app.database.connection import engine
 from ...shema.reservations.ReservationsShema import ReservationCreate,ReservationResponse
-from fastapi import Depends, ses
+from fastapi import Depends
 from ...database.connection import get_db
 from typing import Annotated
 from sqlalchemy.orm import Session
@@ -52,17 +52,10 @@ def deleteReservations(reservationId: int):
         conn.execute(reservation.delete().where(reservation.c.id == reservationId))
 
 def cancelReservations(reservationId: int, db:db_dependency):
-    query = select(reservation).where(reservation.c.id == reservationId)
-    result = db.execute(query).first()
-    if not result:
-        return None 
-    stmt = (update(reservation)
-        .where(reservation.c.id == reservationId)
-        .values(estado="cancelada")
-        .returning(reservation)  
-    )
-    updated = db.execute(stmt).first()
-    db.commit()
-
-    return updated._mapping if updated else None
+    with engine.begin() as conn:
+        conn.execute(reservation.update().values(estado="cancelada").where(reservation.c.id == reservationId))
+        result = conn.execute(
+            reservation.select().where(reservation.c.id == reservationId)
+        ).first()
+        return dict(result._mapping) if result else None
 

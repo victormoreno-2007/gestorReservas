@@ -51,8 +51,11 @@ def delete(reservationId: int, user:dependency):
     return {"message": "Usuario eliminado correctamente"}
 
 @router.put("/{reservation_id}/cancel")
-def cancel_reservation(reservation_id: int, user: dependency):
-    result = cancelReservations(reservation_id)
+def cancel_reservation(reservation_id: int, db: dependency, user: dependency):
     if user.get("role") not in ["admin", "users"]:
-        raise HTTPException(status_code=403, detail="No tienes permisos para crear usuarios")
-    return result
+        raise HTTPException(status_code=403, detail="No tienes permisos para cancelar")
+    result = cancelReservations(reservation_id, db)
+    if not result:
+        raise HTTPException(status_code=404, detail="Reservación no encontrada")
+    
+    return {"message": "Reservación cancelada", "data": result}

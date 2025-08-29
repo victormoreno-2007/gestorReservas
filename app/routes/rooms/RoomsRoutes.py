@@ -37,7 +37,7 @@ def get_Rooms(room_id: int, user:dependency):
 def update(room_id: int, roomData: RoomBase, user:dependency):
     result = updateRooms(roomData, room_id)
     if not result:
-        raise HTTPException(status_code=404, detail="Habitación no encontrada")
+        raise HTTPException(status_code=404, detail="su reserva con ese id no se encontro")
     if user.get("role") not in ["admin", "users"]:
         raise HTTPException(status_code=403, detail="No tienes permisos para crear usuarios")
     return result

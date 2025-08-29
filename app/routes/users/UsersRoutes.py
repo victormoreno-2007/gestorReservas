@@ -11,7 +11,7 @@ dependency = Annotated[dict, Depends(getCurrent)]
 # Crear usuario
 @router.post("/", response_model=UserResponse)
 def create(userData: UserCreate, user:dependency):
-    if user.get("role") != "admin":
+    if user.get("role") not in ["admin", "users"]:
         raise HTTPException(status_code=403, detail="No tienes permisos para crear usuarios")
     return create_user(userData)
 

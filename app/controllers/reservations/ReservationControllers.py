@@ -51,11 +51,21 @@ def deleteReservations(reservationId: int):
     with engine.begin() as conn:
         conn.execute(reservation.delete().where(reservation.c.id == reservationId))
 
-def cancelReservations(reservationId: int, db:db_dependency):
+def cancelReservations(reservationId: int, user: dict):
     with engine.begin() as conn:
-        conn.execute(reservation.update().values(estado="cancelada").where(reservation.c.id == reservationId))
-        result = conn.execute(
-            reservation.select().where(reservation.c.id == reservationId)
-        ).first()
-        return dict(result._mapping) if result else None
+        with engine.begin() as conn:
+            result = conn.execute(reservation.select().where(reservation.c.id == reservationId)).first()
+            if not result:
+                return None
+            if user.get("role") == "users" and result.idUsers != user.get("id"):
+                return None
+            conn.execute(
+                reservation.update()
+                .where(reservation.c.id == reservationId)
+                .values(estado="cancelada")
+            )
+            updated = conn.execute(
+                reservation.select().where(reservation.c.id == reservationId)
+            ).first()
+            return dict(updated._mapping) if updated else None
 

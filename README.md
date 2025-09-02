@@ -68,15 +68,18 @@ La configuración de la conexión se gestiona mediante variables de entorno defi
 ---
 
 ### ⚙️ Configuración del archivo `.env`
-> Se debe crear el archivo .env si no existe  
-> Se debe crearlo manualmente en la **raíz del proyecto**.
+> Se debe crear el archivo `.env` si no existe  
+> Debe crearse manualmente en la **raíz del proyecto**.
 
-Al crear el llamado `.env` innserta el siguiente contenido:
+Al crear el archivo `.env` inserta el siguiente contenido de ejemplo:
 
 ```env
+# Conexión a la base de datos
 DATABASE_URL=mysql+pymysql://usuario:password@localhost:3306/gestorreservas
-```
 
+# Variables para autenticación JWT
+SECRET_KEY=pon_tu_clave_aqui
+ALGORITHM=HS256
 ## 🏗️ Modelos y Schemas
 
 se implementaron los modelos que representan las tablas de la base de datos:

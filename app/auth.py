@@ -12,11 +12,15 @@ from app.shema.users.UsersShema import LoginSchema
 from app.controllers.users.UsersControllers import create_user
 from app.models.users.UsersModel import users
 from sqlalchemy import select
+from dotenv import load_dotenv
+import os
 
 router = APIRouter(prefix='/auth', tags=['auth'])
 
-SECRET_KEY = '197b2c37c391bed93fe80344fe73b806947a362006e05a1a23c2fa1270fe3'
-ALGORITHM = 'HS256'
+load_dotenv()
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
 
 bcrypt_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
 oauth2_bearer = OAuth2PasswordBearer(tokenUrl='auth/token')
